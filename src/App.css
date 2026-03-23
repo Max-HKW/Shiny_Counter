@@ -1,0 +1,246 @@
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes border-rotate {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@keyframes shiny-sweep {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-num {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.counter__container {
+  position: relative;
+  z-index: 1;
+  width: min(95vw, 28em);
+  min-height: 22em;
+  padding: 2.5rem 2rem 2.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1.25rem;
+  background: var(--bg-card);
+  animation: fadein 0.6s ease both;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: calc(1.25rem + 1px);
+    background: conic-gradient(
+      from var(--angle),
+      #1c0028 0deg,
+      #8a0030 60deg,
+      #d4003e 120deg,
+      #ff3366 180deg,
+      #d4003e 240deg,
+      #8a0030 300deg,
+      #1c0028 360deg
+    );
+    animation: border-rotate 5s linear infinite;
+    z-index: -1;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: calc(1.25rem - 1px);
+    background: var(--bg-card);
+    z-index: -1;
+  }
+}
+
+.counter__header {
+  animation: fadein 0.6s 0.1s ease both;
+
+  & h1 {
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 0.22em;
+    font-size: clamp(1.2rem, 3vw + 0.4rem, 1.9rem);
+    margin: 0 0 0.3rem;
+    background: linear-gradient(
+      105deg,
+      #d4003e 0%,
+      #f0004e 20%,
+      #ff88aa 40%,
+      #ffffff 50%,
+      #ff88aa 60%,
+      #f0004e 80%,
+      #d4003e 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shiny-sweep 4s ease-in-out infinite alternate;
+  }
+}
+
+.counter__subtitle {
+  font-size: clamp(0.65rem, 1vw + 0.35rem, 0.8rem);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent-mute);
+  text-align: center;
+  margin-bottom: 2rem;
+  animation: fadein 0.6s 0.2s ease both;
+  font-weight: 600;
+}
+
+.counter__value {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: clamp(4rem, 10vw, 6.5rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  padding: 0 0 1.8rem;
+  color: var(--accent-hi);
+  text-shadow: 0 0 32px rgba(255, 50, 100, 0.25);
+  transition: color 0.15s;
+  animation: fadein 0.6s 0.25s ease both;
+
+  &.bump {
+    animation: pulse-num 0.18s ease;
+  }
+}
+
+.counter__divider {
+  width: 70%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent-lo) 30%,
+    var(--accent-mid) 50%,
+    var(--accent-lo) 70%,
+    transparent
+  );
+  margin-bottom: 1.8rem;
+}
+
+.counter__actions {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+  animation: fadein 0.6s 0.35s ease both;
+
+  & button {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1.5px solid var(--btn-border);
+    background: var(--btn-bg);
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      background 0.2s,
+      box-shadow 0.2s,
+      transform 0.15s;
+    box-shadow:
+      0 0 10px rgba(255, 50, 100, 0.18),
+      inset 0 0 8px rgba(255, 50, 100, 0.08);
+
+    &:hover {
+      border-color: #ff6688;
+      background: rgba(255, 50, 100, 0.42);
+      box-shadow:
+        0 0 20px rgba(255, 50, 100, 0.38),
+        inset 0 0 12px rgba(255, 50, 100, 0.15);
+
+      & .counter__minus,
+      & .counter__plus--horizontal,
+      & .counter__plus--vertical {
+        background: #ffffff;
+      }
+    }
+
+    &:active {
+      transform: scale(0.91);
+    }
+
+    &.counter__reset {
+      & svg {
+        width: 18px;
+        height: 18px;
+        stroke: #ffaabb;
+        transition:
+          stroke 0.2s,
+          transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      &:hover svg {
+        stroke: #ffffff;
+        transform: rotate(-360deg);
+      }
+
+      &:active svg {
+        transform: rotate(-360deg) scale(0.91);
+      }
+    }
+  }
+}
+
+.counter__minus,
+.counter__plus--horizontal,
+.counter__plus--vertical {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  height: 2.5px;
+  width: 18px;
+  border-radius: 2px;
+  background: #ffaabb;
+  transform: translate(-50%, -50%);
+  transition: background 0.2s;
+}
+
+.counter__plus--vertical {
+  transform: translate(-50%, -50%) rotate(90deg);
+}

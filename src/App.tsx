@@ -1,4 +1,9 @@
 /**
+ * Node modules
+ */
+import { useEffect } from "react";
+
+/**
  * Styles
  */
 import "./App.css";
@@ -15,6 +20,25 @@ import { RotateCcw } from "lucide-react";
 
 function App() {
   const { counterValue, decrement, increment, reset } = useCounter();
+
+  useEffect(() => {
+    const handleKeydown = (event: KeyboardEvent) => {
+      if (event.key === "i") {
+        increment();
+      }
+
+      if (event.key === "d") {
+        decrement();
+      }
+
+      if (event.key === "r") {
+        reset();
+      }
+    };
+    document.addEventListener("keydown", handleKeydown);
+
+    return () => document.removeEventListener("keydown", handleKeydown);
+  }, []);
 
   return (
     <div className="counter__container">
